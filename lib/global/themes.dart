@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+class ThemeColor {
+  static Color kCyberPurple = Color(0xFF783C9A);
+  static Color kCyberPink = Color(0xFFC5213F);
+  static Color kCyberYellow = Color(0xFFF4AA2F);
+  static Color kCyberBlue = Color(0xFF15324B);
+}
 class GlobalTheme {
   static Map<int, Color> kPinkSwatch = {
     50: Color(0xFFFFF0F1),
@@ -15,11 +21,12 @@ class GlobalTheme {
   };
   static Color biliPink = MaterialColor(500, kPinkSwatch);
   static ThemeData buildTheme() {
-    return ThemeData(
+    return ThemeData.dark().copyWith(
       primaryColor: kPinkSwatch[600],
-      primarySwatch: Colors.pink,
+      textSelectionColor: ThemeColor.kCyberPink,
       buttonTheme: primaryButtonTheme,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFF0d0d0d),
+      scaffoldBackgroundColor: Color(0xFF000000)
     );
   }
 
@@ -43,6 +50,7 @@ class GlobalTheme {
   static Border commonBorder ({Color color = Colors.black12}) {
     return Border.all(color: color, width: 1);
   }
+
 
   static BorderRadius commonRadius({double radius = 20}) {
     return BorderRadius.only(topLeft: Radius.circular(radius),

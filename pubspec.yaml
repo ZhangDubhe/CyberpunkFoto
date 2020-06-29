@@ -1,5 +1,5 @@
 name: cyberpunkphoto
-description: Cyberpunk Style photo filter
+description: Cyberpunk Style photo filter, a demo for flutter hackthon 2020.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -29,6 +29,9 @@ dependencies:
   provide: 1.0.2
   permission_handler: 5.0.0+hotfix.8
   audioplayers: ^0.15.1
+  image_picker:
+  photofilters:
+  path_provider:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -54,6 +57,7 @@ flutter:
   assets:
     - assets/data/
     - assets/audios/
+    - assets/google_fonts/
     - assets/images/
     - assets/images/2.0x/
     - assets/images/3.0x/

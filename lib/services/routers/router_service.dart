@@ -2,6 +2,8 @@ import 'package:cyberpunkphoto/pages/cyberpunk/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+export 'package:cyberpunkphoto/pages/cyberpunk/index.dart';
+
 typedef Widget RouteBuilder(String code, Map<dynamic, dynamic> para, String path);
 
 class RouterService{

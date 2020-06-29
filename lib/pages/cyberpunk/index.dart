@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cyberpunkphoto/global/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,19 +24,22 @@ class _CyberpunkFutureState extends State<CyberpunkFuture> {
 
   @override
   Widget build(BuildContext context) {
-    _textStyle = TextStyle(
+    _titleStyle = GoogleFonts.vt323(
+        color: Colors.white,
+        fontSize: 24
+    );
+    _textStyle = _titleStyle.merge(TextStyle(
         color: Colors.white,
         fontSize: 20,
         shadows: [
           Shadow(
-            color: Colors.yellow[100],
-            offset: Offset(-2, -2),
-            blurRadius: 2
+              color: Colors.yellow[100],
+              offset: Offset(-2, -2),
+              blurRadius: 2
           )
         ]
-    );
+    ));
     return Scaffold(
-      backgroundColor: Color(0xFF0d0d0d),
       body: StreamBuilder<bool>(
           stream: _filterSwitcher,
           initialData: true,
@@ -47,37 +51,13 @@ class _CyberpunkFutureState extends State<CyberpunkFuture> {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: Text('Cyberpunk You foto!',
-                      style: GoogleFonts.vt323(
-                      color: Colors.white,
-                      fontSize: 24
-                    ),),
+                      style: _titleStyle,),
                   ),
                   Center(
                     child: Stack(
                       overflow: Overflow.visible,
                       alignment: Alignment.center,
                       children: <Widget>[
-                        Positioned(
-                          bottom: -100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('Back now', style: _textStyle,),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Switch.adaptive(
-                                  onChanged: (bool _isOn) {
-                                    print(_isOn);
-                                    _filterSwitcher.add(_isOn);
-                                  },
-                                  value: snapshot.data,
-                                  activeColor: Colors.blueAccent,
-                                ),
-                              ),
-                              Text('To Future!', style: _textStyle)
-                            ],
-                          ),
-                        ),
                         Container(
                           height: 400,
                           width: MediaQuery.of(context).size.width,
@@ -88,11 +68,44 @@ class _CyberpunkFutureState extends State<CyberpunkFuture> {
                       ] + _filters(snapshot.data),
                     ),
                   ),
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Back now', style: _textStyle,),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Switch.adaptive(
+                          onChanged: (bool _isOn) {
+                            print(_isOn);
+                            _filterSwitcher.add(_isOn);
+                          },
+                          value: snapshot.data,
+                          activeColor: Colors.blueAccent,
+                        ),
+                      ),
+                      Text('To Future!', style: _textStyle)
+                    ],
+                  ),
+                  bottomControl()
                 ],
               ),
             );
           }
       ),
+    );
+  }
+
+  Widget bottomControl() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          onPressed: () => print('import'),
+          color: ThemeColor.kCyberPink.withOpacity(0.2),
+          child: Text('Import', style: _textStyle.copyWith(color: ThemeColor.kCyberPink),),
+        )
+      ],
     );
   }
 
