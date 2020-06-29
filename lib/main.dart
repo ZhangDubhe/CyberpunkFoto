@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('google_fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });
+//  LicenseRegistry.addLicense(() async* {
+//    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+//    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+//  });
   _adjustThemeMode();
   runApp(MyApp());
 }

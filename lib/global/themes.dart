@@ -37,10 +37,10 @@ class GlobalTheme {
     padding: EdgeInsets.all(0)
   );
 
-  static List<BoxShadow> commonShadow({Color color = Colors.black12, double opacity = 0.1, Offset offset = const Offset(0.0, 3), double radius = 3.0}) {
+  static List<BoxShadow> commonShadow({Color color = Colors.black12, double opacity = 0.08, Offset offset = const Offset(0.0, 3), double radius = 3.0}) {
     return [
       BoxShadow(
-        color: color.withOpacity(0.08),
+        color: color.withOpacity(opacity),
         offset: offset,
         blurRadius: 15,
       ),

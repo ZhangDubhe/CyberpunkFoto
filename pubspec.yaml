@@ -30,8 +30,10 @@ dependencies:
   permission_handler: 5.0.0+hotfix.8
   audioplayers: ^0.15.1
   image_picker:
-  photofilters:
+  photofilters: 1.0.5
   path_provider:
+  image: 2.1.12
+  path:
 
 
   # The following adds the Cupertino Icons font to your application.

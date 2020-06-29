@@ -1,9 +1,16 @@
+import 'dart:typed_data';
 import 'dart:ui';
+import 'package:cyberpunkphoto/pages/cyberpunk/breathe_light.dart';
+import 'package:cyberpunkphoto/pages/cyberpunk/filter_view_model.dart';
+import 'package:cyberpunkphoto/pages/cyberpunk/image_layer.dart';
+import 'package:image/image.dart' as imageLib;
 
 import 'package:cyberpunkphoto/global/themes.dart';
+import 'package:cyberpunkphoto/pages/cyberpunk/image_layer_old.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CyberpunkFuture extends StatefulWidget {
@@ -18,147 +25,137 @@ class CyberpunkFuture extends StatefulWidget {
 class _CyberpunkFutureState extends State<CyberpunkFuture> {
   String _url = 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-1.2.1&auto=format&fit=crop&w=2013&q=80';
   BehaviorSubject<bool> _filterSwitcher = BehaviorSubject.seeded(true);
-
+  String _localFile;
   TextStyle  _textStyle;
   TextStyle  _titleStyle;
+  imageLib.Image image;
+  ImagePicker _imagePicker = ImagePicker();
+  FilterViewModel _vm = FilterViewModel();
+
+  Future getImage() async {
+    PickedFile imageFile = await _imagePicker.getImage(source: ImageSource.gallery);
+    if (imageFile == null) return;
+    Uint8List _data = await imageFile.readAsBytes();
+    print(imageFile.path);
+    imageLib.Image _image = imageLib.decodeImage(_data);
+    _image = imageLib.copyResize(_image, width: 1080, height: 1080,);
+    setState(() {
+      image = _image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     _titleStyle = GoogleFonts.vt323(
         color: Colors.white,
-        fontSize: 24
+        fontSize: 30
     );
     _textStyle = _titleStyle.merge(TextStyle(
-        color: Colors.white,
+        color: ThemeColor.kCyberPink,
         fontSize: 20,
-        shadows: [
-          Shadow(
-              color: Colors.yellow[100],
-              offset: Offset(-2, -2),
-              blurRadius: 2
-          )
-        ]
     ));
     return Scaffold(
-      body: StreamBuilder<bool>(
-          stream: _filterSwitcher,
-          initialData: true,
-          builder: (context, snapshot) {
-            print(snapshot.data);
-            return SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text('Cyberpunk You foto!',
-                      style: _titleStyle,),
-                  ),
-                  Center(
-                    child: Stack(
-                      overflow: Overflow.visible,
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: 400,
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.white10,
-                        ),
-                        _imageBuilder(),
-
-                      ] + _filters(snapshot.data),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Back now', style: _textStyle,),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Switch.adaptive(
-                          onChanged: (bool _isOn) {
-                            print(_isOn);
-                            _filterSwitcher.add(_isOn);
-                          },
-                          value: snapshot.data,
-                          activeColor: Colors.blueAccent,
-                        ),
-                      ),
-                      Text('To Future!', style: _textStyle)
-                    ],
-                  ),
-                  bottomControl()
-                ],
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(Color(0x9F000000), BlendMode.darken),
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/pic_bg.png')
+          )
+        ),
+        child: SafeArea(
+          child: ListView(
+            children: <Widget>[
+              BreatheLight(),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text('Cyberpunk You foto!',
+                  style: _titleStyle, textAlign: TextAlign.center,),
               ),
-            );
-          }
-      ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ImageLayer(
+                  viewModel: _vm,
+                  image: image,
+                ),
+              ),
+//            ImageLayerOld(
+//              url: _url,
+//              isFilterOn: _filterSwitcher,
+//            ),
+              SizedBox(height: 10,),
+              cyberpunkControl(),
+              _bottomControl(),
+              BreatheLight(),
+            ],
+          ),
+        ),
+      )
     );
   }
 
-  Widget bottomControl() {
+  Widget _bottomControl() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        RaisedButton(
-          onPressed: () => print('import'),
-          color: ThemeColor.kCyberPink.withOpacity(0.2),
-          child: Text('Import', style: _textStyle.copyWith(color: ThemeColor.kCyberPink),),
-        )
-      ],
-    );
-  }
-
-List<Widget> _filters(bool isShow) {
-    if (isShow) {
-      return [
-        _imageBuilder(cFilter: CyberpunkFilter(
-            color: Colors.red,
-            opacity: 0.6,
-            offset: Offset(-2, 2)
-        )),
-        _imageBuilder(cFilter: CyberpunkFilter(
-            color: Colors.blue,
-            opacity: 0.6,
-            blurSigma: Offset(200, 40),
-            offset: Offset(2, -2)
-        )),
-//        _imageBuilder(cFilter: CyberpunkFilter(
-//            color: Colors.green,
-//            opacity: 0.6
-//        )),
-        _imageBuilder(cFilter: CyberpunkFilter(
-            color: Colors.white10,
-            blendMode: BlendMode.darken,
-            opacity: 0.6
-        )),
-      ];
-    } else {
-      return [];
-    }
-}
-  Widget _imageBuilder({double height: 400, CyberpunkFilter cFilter}) {
-    return Positioned(
-      top: cFilter?.offset?.dy??0,
-      left: cFilter?.offset?.dx??0,
-      child: ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: cFilter?.blurSigma?.dx??0,
-            sigmaY: cFilter?.blurSigma?.dy??0
-          ),
-          child: Opacity(
-            opacity: cFilter?.opacity??1,
-            child: Container(
-              height: height,
-              child: Image.network(_url,
-                color: cFilter?.color,
-                colorBlendMode: cFilter?.blendMode??BlendMode.color,
-              )
+        GestureDetector(
+          onTap: () => getImage(),
+          child: Container(
+            width: 160,
+            height: 90,
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: AssetImage('assets/images/btn_imp.png')
+              ),
             ),
           ),
         ),
-      ),
+        GestureDetector(
+          onTap: () => print('Export'),
+          child: Container(
+            width: 160,
+            height: 90,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: AssetImage('assets/images/btn_exp.png')
+              ),
+            ),
+          ),
+        ),
+
+      ],
+    );
+  }
+  Widget cyberpunkControl() {
+    return StreamBuilder<bool>(
+        stream: _filterSwitcher,
+        initialData: true,
+        builder: (context, snapshot) {
+          return image != null ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Back now', style: _textStyle,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Switch.adaptive(
+                  onChanged: (bool _isOn) {
+                    _filterSwitcher.add(_isOn);
+                    _vm.showFilter(isShow: _isOn);
+                  },
+                  value: snapshot.data,
+                  activeColor: ThemeColor.kCyberPurple,
+                ),
+              ),
+              Text('To Future!', style: _textStyle)
+            ],
+          ) : Center(
+            child: Text('Import Photo, have a try!', style: _textStyle,),
+          );
+        }
     );
   }
 
@@ -167,15 +164,3 @@ List<Widget> _filters(bool isShow) {
   }
 }
 
-class CyberpunkFilter {
-  Color color;
-  BlendMode blendMode;
-  double opacity;
-  Offset offset;
-  Offset blurSigma;
-
-  CyberpunkFilter({
-    this.color, this.blendMode, this.opacity,
-     this.offset, this.blurSigma
-  });
-}
