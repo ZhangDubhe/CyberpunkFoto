@@ -4,6 +4,8 @@ Cyberpunk Style photo app, a cyberpunk style filter.
 
 Make Everything **Cyberpunk**!
 
+> coder: [ZhangDubhe🛹](https://github.com/ZhangDubhe) | designer: [Linxiaopeng🍺](https://github.com/Linxiaopeng)
+
 ## Preview
 ### Before U Import
 ![1](./preview/preview_2.jpeg)
