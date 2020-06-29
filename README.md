@@ -1,16 +1,27 @@
-# cyberpunkphoto
+# Cyberpunk Photo
 
-Cyberpunk Style photo filter
+Cyberpunk Style photo app, a cyberpunk style filter.
 
-## Getting Started
+Make Everything **Cyberpunk**!
 
-This project is a starting point for a Flutter application.
+## Preview
+### Before U Import
+![1](./preview/preview_2.jpeg)
+### After
+![2](./preview/preview_1.jpeg)
 
-A few resources to get you started if this is your first Flutter project:
+## Main Feature
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+1. A filter to make your photo cyberpunk
+2. Compare with original and stylized pic.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Future
+
+Make it more powerful.
+1. More filters.
+2. Really Export. hhh
+
+
+## End
+This is a demo app for Flutter Hackthon 2020. #Hack20
+Have a detail look [Here](https://flutterhackathon.com/#/)
