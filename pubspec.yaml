@@ -30,6 +30,7 @@ dependencies:
   permission_handler: 5.0.0+hotfix.8
   audioplayers: ^0.15.1
   image_picker:
+  image_picker_web: 1.0.9
   photofilters: 1.0.5
   path_provider:
   image: 2.1.12
@@ -57,8 +58,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/data/
-    - assets/audios/
     - assets/google_fonts/
     - assets/images/
     - assets/images/2.0x/

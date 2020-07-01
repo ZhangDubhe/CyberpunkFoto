@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cyberpunkphoto/pages/cyberpunk/breathe_light.dart';
 import 'package:cyberpunkphoto/pages/cyberpunk/filter_view_model.dart';
 import 'package:cyberpunkphoto/pages/cyberpunk/image_layer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as imageLib;
 
 import 'package:cyberpunkphoto/global/themes.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CyberpunkFuture extends StatefulWidget {
@@ -32,13 +34,21 @@ class _CyberpunkFutureState extends State<CyberpunkFuture> {
   ImagePicker _imagePicker = ImagePicker();
   FilterViewModel _vm = FilterViewModel();
 
-  Future getImage() async {
+  Future<Uint8List> pickImage() async {
     PickedFile imageFile = await _imagePicker.getImage(source: ImageSource.gallery);
-    if (imageFile == null) return;
-    Uint8List _data = await imageFile.readAsBytes();
+    if (imageFile == null) throw Error();
     print(imageFile.path);
+    return await imageFile.readAsBytes();
+  }
+
+  Future<Uint8List> webPickImage() async {
+    Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    return fromPicker;
+  }
+  Future getImage() async {
+    Uint8List _data = (kIsWeb == true) ? await webPickImage() : await pickImage();
     imageLib.Image _image = imageLib.decodeImage(_data);
-    _image = imageLib.copyResize(_image, width: 1080, height: 1080,);
+    _image = imageLib.copyResize(_image, height: 1080,);
     setState(() {
       image = _image;
     });
