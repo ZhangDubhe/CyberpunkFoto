@@ -1,5 +1,0 @@
-# OWNER
-ZhangDubhe
-
-# DESIGNER
-Linxiaopeng
