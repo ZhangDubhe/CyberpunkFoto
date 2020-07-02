@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Flutter Build CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -26,11 +26,8 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'beta' # or: 'dev' or 'beta'
-    - name: Flutter Install
     - run: flutter pub get
     - run: flutter test
-      
-    - name: Flutter Build Web
     - run: flutter config --enable-web
     - run: flutter build web
 
