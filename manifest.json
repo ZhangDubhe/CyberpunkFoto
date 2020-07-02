@@ -1,11 +1,11 @@
 {
-    "name": "CyberpunkFoto",
-    "short_name": "CyberpunkFoto",
+    "name": "cyberpunk_photo",
+    "short_name": "cyberpunk_photo",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#C5213F",
+    "theme_color": "#C5213F",
+    "description": "A Cyberpunk style filter. Future: Make this filter different in different spots worldwide.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
